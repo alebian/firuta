@@ -14,14 +14,13 @@ module Firuta
 
   class Base
     def initialize(collection = nil)
-      @commands = []
+      @steps = [[]]
       @collection = collection
       @terminal_command_added = false
     end
 
     COMMANDS = [
       [:filter,   Commands::Filter],
-      [:map,      Commands::Map],
       [:sort,     Commands::Sort],
       [:reduce,   Commands::Reduce],
       [:paginate, Commands::Paginate],
@@ -30,28 +29,38 @@ module Firuta
     ].freeze
 
     COMMANDS.each do |array|
-      define_method(array[0]) do |proc = nil, params = nil, function: nil, with: [], &block|
+      define_method(array[0]) do |func = nil, params = nil, function: nil, with: [], &block|
         add(
           command: array[1],
-          proc: proc || function || block,
+          func: func || function || block,
           params: params || with
         )
+        self
       end
+    end
+
+    def map(func = nil, params = nil, function: nil, with: [], &block)
+      add(command: Commands::Map, func: func || function || block, params: params || with)
+      @steps << []
+      self
     end
 
     def apply(collection = nil)
       result = collection || @collection
-      @commands.each do |command|
-        result = command.apply_to(result)
+      @steps.each do |commands|
+        break if commands.empty?
+        commands.each do |command|
+          result = command.apply_to(result)
+        end
       end
       result
     end
 
     private
 
-    def add(command:, proc:, params:)
+    def add(command:, func:, params:)
       raise Errors::MoreThanOneTerminalCommand if @terminal_command_added
-      @commands << command.new(proc, params)
+      @steps.last << command.new(func, params)
       @terminal_command_added = true if command.terminal?
       self
     end

@@ -20,6 +20,10 @@ module Firuta
       def self.terminal?
         false
       end
+
+      def to_s
+        "#{self.class} params: #{@params}"
+      end
     end
   end
 end

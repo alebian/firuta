@@ -1,15 +1,15 @@
 shared_examples 'block checker' do
   it 'adds the block' do
-    expect(firuta.instance_variable_get(:@commands).size).to eq(1)
+    expect(firuta.instance_variable_get(:@steps).first.size).to eq(1)
   end
 
   it 'the command added has the correct class' do
-    expect(firuta.instance_variable_get(:@commands).first.class)
+    expect(firuta.instance_variable_get(:@steps).first.first.class)
       .to eq(command_class)
   end
 
   it 'assigns the correct block' do
-    expect(firuta.instance_variable_get(:@commands).first.instance_variable_get(:@proc))
+    expect(firuta.instance_variable_get(:@steps).first.first.instance_variable_get(:@proc))
       .to eq(block)
   end
 end
