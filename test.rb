@@ -1,4 +1,4 @@
-require_relative 'filter_applier'
+require_relative 'firuta'
 require_relative 'test_model'
 require_relative 'filters'
 
@@ -9,18 +9,17 @@ elements = [
 ]
 
 conjunction_result =
-  FilterApplier
-    .add(filter: BY_PRICE, params: [1, 9])
-    .add(filter: BY_LENGTH, params: [1])
-    .filter(elements)
+  Firuta
+    .do(filter: BY_PRICE, with: [1, 9])
+    .do(filter: BY_LENGTH, with: [1])
+    .apply_all_to(elements)
 
 disjunction_result =
-  FilterApplier.new(:disjunction)
-    .add(filter: STARTS_WITH_A)
-    .add(filter: BY_LENGTH, params: [1])
-    .filter(elements)
+  Firuta
+    .do(filter: STARTS_WITH_A)
+    .do(filter: BY_LENGTH, with: [1])
+    .apply_any_to(elements)
 
-puts 'Conjunction results:'
 puts conjunction_result
-puts 'Disjunction results:'
+puts '-------------------------'
 puts disjunction_result
