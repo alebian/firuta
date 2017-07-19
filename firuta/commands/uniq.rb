@@ -2,9 +2,9 @@ require_relative 'base'
 
 module Firuta
   module Commands
-    class Filter < Base
+    class Uniq < Base
       def apply_to(collection)
-        collection.select { |element| call(element) }
+        collection.uniq &@proc
       end
     end
   end

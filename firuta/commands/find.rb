@@ -2,9 +2,13 @@ require_relative 'base'
 
 module Firuta
   module Commands
-    class Filter < Base
+    class Find < Base
       def apply_to(collection)
-        collection.select { |element| call(element) }
+        collection.find &@proc
+      end
+
+      def self.terminal?
+        true
       end
     end
   end

@@ -3,42 +3,32 @@ require_relative 'test_model'
 require_relative 'filters'
 
 elements = [
-  TestModel.new(10, 'a'),
+  TestModel.new(10, 'aa'),
   TestModel.new(3, 'bb'),
-  TestModel.new(-1, 'cc')
+  TestModel.new(-1, 'cccc'),
+  TestModel.new(-5, 'ccdddd'),
+  TestModel.new(8, 'asd'),
+  TestModel.new(8, 'asd'),
+  TestModel.new(100, 'asdasd'),
+  TestModel.new(56, 'asdasdasd'),
+  TestModel.new(-150, 'asdasdasdasdasd')
 ]
 
-conjunction_result =
-  Firuta.new
-    .filter(BY_PRICE, with: [1, 9])
-    .filter(BY_LENGTH, with: [1])
-    .apply_all_to(elements)
+puts Firuta.new
+       .filter(BY_PRICE, with: [-10, 20])
+       .filter(BY_LENGTH, with: [1])
+       .map { |elem| elem.set_name 'a' }
+       .sort { |x, y| x.price <=> y.price }
+       .uniq { |a| a.price }
+       .paginate(with: { page: 1, page_size: 2 })
+       .apply(elements)
 
-disjunction_result =
-  Firuta.new
-    .filter(STARTS_WITH_A)
-    .filter(BY_LENGTH, with: [1])
-    .apply_any_to(elements)
-
-puts conjunction_result
-puts '-------------------------'
-puts disjunction_result
-puts '-------------------------'
-puts 'NEW WAY'
 puts '-------------------------'
 
-conjunction_result =
-  Firuta.new(elements)
-    .filter(BY_PRICE, with: [1, 9])
-    .filter(BY_LENGTH, with: [1])
-    .apply_all
-
-disjunction_result =
-  Firuta.new(elements)
-    .filter(STARTS_WITH_A)
-    .filter(BY_LENGTH, with: [1])
-    .apply_any
-
-puts conjunction_result
-puts '-------------------------'
-puts disjunction_result
+puts Firuta.new(elements)
+       .filter(BY_PRICE, with: [-10, 20])
+       .filter(BY_LENGTH, with: [1])
+       .map { |elem| elem.set_name 'a' }
+       .sort { |x, y| x.price <=> y.price }
+       .uniq { |a| a.price }
+       .apply

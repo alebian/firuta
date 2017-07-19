@@ -1,3 +1,5 @@
+require_relative '../errors/subclass_must_implement'
+
 module Firuta
   module Commands
     class Base
@@ -10,7 +12,11 @@ module Firuta
         @proc.call(element, *@params)
       end
 
-      def terminal?
+      def apply_to(*params)
+        raise SubclassMustImplement
+      end
+
+      def self.terminal?
         false
       end
     end

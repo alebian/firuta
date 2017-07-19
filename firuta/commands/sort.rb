@@ -2,9 +2,9 @@ require_relative 'base'
 
 module Firuta
   module Commands
-    class Filter < Base
+    class Sort < Base
       def apply_to(collection)
-        collection.select { |element| call(element) }
+        collection.sort &@proc
       end
     end
   end

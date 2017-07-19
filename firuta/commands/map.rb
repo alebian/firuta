@@ -2,9 +2,9 @@ require_relative 'base'
 
 module Firuta
   module Commands
-    class Filter < Base
+    class Map < Base
       def apply_to(collection)
-        collection.select { |element| call(element) }
+        collection.map { |element| call(element) }
       end
     end
   end
