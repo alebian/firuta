@@ -1,4 +1,4 @@
-require_relative 'filter'
+require_relative 'commands/filter'
 
 module Firuta
   class Base
@@ -9,7 +9,7 @@ module Firuta
     end
 
     def filter(filter, with: [])
-      filters << Filter.new(filter, with)
+      filters << Commands::Filter.new(filter, with)
       self
     end
 
