@@ -1,0 +1,37 @@
+AllCops:
+  Exclude:
+    - firuta.gemspec
+
+Documentation:
+  Enabled: false
+
+LineLength:
+  Max: 99
+
+FrozenStringLiteralComment:
+  Enabled: false
+
+BlockLength:
+  Enabled: false
+
+# rubocop-rspec custom configurations
+
+require: rubocop-rspec
+
+Style/VariableNumber:
+  EnforcedStyle: snake_case
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false

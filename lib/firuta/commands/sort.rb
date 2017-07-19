@@ -4,7 +4,7 @@ module Firuta
   module Commands
     class Sort < Base
       def apply_to(collection)
-        collection.sort &@proc
+        collection.sort(&@proc)
       end
     end
   end

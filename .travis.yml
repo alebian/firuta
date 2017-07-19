@@ -1,0 +1,18 @@
+language: ruby
+rvm:
+  - 2.1
+  - 2.2
+  - 2.3
+  - 2.4
+
+install:
+  - gem install bundler
+  - bundle install --retry=3
+
+script:
+  - bundle exec rspec
+  - bundle exec rubocop -R lib spec --format simple
+  - CODECLIMATE_REPO_TOKEN=2867149edd72043434446a367a79e60316c7353d02a77633e57cf48cecad0853 bundle exec codeclimate-test-reporter
+
+os:
+  - linux
