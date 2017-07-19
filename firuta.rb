@@ -19,60 +19,24 @@ module Firuta
       @terminal_command_added = false
     end
 
-    def filter(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Filter,
-        proc: proc || function || block,
-        params: params || with
-      )
-    end
+    COMMANDS = [
+      [:filter,   Commands::Filter],
+      [:map,      Commands::Map],
+      [:sort,     Commands::Sort],
+      [:reduce,   Commands::Reduce],
+      [:paginate, Commands::Paginate],
+      [:uniq,     Commands::Uniq],
+      [:find,     Commands::Find]
+    ].freeze
 
-    def map(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Map,
-        proc: proc || function || block,
-        params: params || with
-      )
-    end
-
-    def sort(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Sort,
-        proc: proc || function || block,
-        params: params || with
-      )
-    end
-
-    def reduce(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Reduce,
-        proc: proc || function || block,
-        params: params || with
-      )
-    end
-
-    def paginate(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Paginate,
-        proc: proc || function || block,
-        params: params || with
-      )
-    end
-
-    def uniq(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Uniq,
-        proc: proc || function || block,
-        params: params || with
-      )
-    end
-
-    def find(proc = nil, params = nil, function: nil, with: [], &block)
-      add(
-        command: Commands::Find,
-        proc: proc || function || block,
-        params: params || with
-      )
+    COMMANDS.each do |array|
+      define_method(array[0]) do |proc = nil, params = nil, function: nil, with: [], &block|
+        add(
+          command: array[1],
+          proc: proc || function || block,
+          params: params || with
+        )
+      end
     end
 
     def apply(collection = nil)
