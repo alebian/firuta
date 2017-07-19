@@ -1,45 +1,19 @@
-class Firuta
-  attr_reader :filters
+require_relative 'firuta/with_collection'
+require_relative 'firuta/without_collection'
 
-  def initialize
-    @filters = []
+module Firuta
+  module_function
+
+  def new(collection = nil)
+    return with_collection(collection) unless collection.nil?
+    without_collection
   end
 
-  def self.do(*params)
-    new.do(*params)
+  def with_collection(collection)
+    WithCollection.new(collection)
   end
 
-  def do(filter:, with: [])
-    filters << Filter.new(filter, with)
-    self
-  end
-
-  def apply_all_to(collection = [])
-    apply_with(collection, :&)
-  end
-
-  def apply_any_to(collection = [])
-    apply_with(collection, :|)
-  end
-
-  private
-
-  class Filter
-    def initialize(proc, params)
-      @proc = proc
-      @params = params
-    end
-
-    def call(element)
-      @proc.call(element, *@params)
-    end
-  end
-
-  def apply_with(collection, reducer)
-    collection.select do |element|
-      filters
-        .map { |filter| filter.call(element) }
-        .reduce(reducer)
-    end
+  def without_collection
+    WithoutCollection.new
   end
 end
